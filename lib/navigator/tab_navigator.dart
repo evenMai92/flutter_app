@@ -6,14 +6,14 @@ import 'package:flutterapp/pages/travel_page.dart';
 
 class TabNavigator extends StatefulWidget {
   @override
-  _TabNavigatorState createState() => _TabNavigatorState();
+  _TabNavigatorState createState() => new _TabNavigatorState();
 }
 
 class _TabNavigatorState extends State<TabNavigator> {
   final _defaultColor = Colors.grey;
   final _activeColor = Colors.blue;
   int _currentIndex = 0;
-  final PageController _controller = PageController(
+  final PageController _controller = new PageController(
     initialPage: 0,
   );
   @override
@@ -27,10 +27,10 @@ class _TabNavigatorState extends State<TabNavigator> {
           });
         },
         children: <Widget>[
-          HomePage(),
-          SearchPage(),
-          TravelPage(),
-          MyPage(),
+          new HomePage(),
+          new SearchPage(),
+          new TravelPage(),
+          new MyPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
