@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'dart:convert';
+import 'package:flutterapp/dao/home_dao.dart';
+import 'package:flutterapp/model/home_model.dart';
 const APPBAR_SCROLL_OFFSET = 100;
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => new _HomePageState();
@@ -13,6 +17,14 @@ class _HomePageState extends State<HomePage> {
     'https://dimg04.c-ctrip.com/images/0zg3j120004va7ebq7783.jpg'
   ];
   double appBarAlpha = 0;
+  String resultString = '';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadData();
+  }
   // 设置页面滚动时相关容器的透明度
   void _onScroll(offset) {
     double alpha = offset / APPBAR_SCROLL_OFFSET;
@@ -24,6 +36,19 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       appBarAlpha = alpha;
     });
+  }
+  // 加载首页数据
+  void loadData() async{
+    try {
+      HomeModel model = await HomeDao.fetch();
+      setState(() {
+        resultString = json.encode(model.bannerList);
+      });
+    }catch(e) {
+      setState(() {
+        resultString = e.toString();
+      });
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -41,6 +66,7 @@ class _HomePageState extends State<HomePage> {
                 onNotification: (scrollNotification) {
                   if(scrollNotification is ScrollUpdateNotification && scrollNotification.depth == 0) {
                     // 滚动且是列表滚动的时候
+                    
                     _onScroll(scrollNotification.metrics.pixels);
                     return true;
                   }
@@ -73,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Container(
                       height: 800,
-                      child: ListTile(title: Text('哈哈'),),
+                      child: ListTile(title: Text(resultString),),
                     )
                   ],
                 ),
